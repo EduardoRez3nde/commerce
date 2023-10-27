@@ -2,8 +2,10 @@ package com.rezende.commerce.entities;
 
 import jakarta.persistence.*;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_product")
@@ -87,6 +89,10 @@ public class Product {
 
     public List<Order> getOrder() {
         return items.stream().map(OrderItem::getOrder).toList();
+    }
+
+    public Set<OrderItem> getItems() {
+        return items;
     }
 
     @Override
