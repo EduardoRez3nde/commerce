@@ -88,4 +88,12 @@ public class ProductDTO {
     public List<CategoryDTO> getCategories() {
         return categories;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

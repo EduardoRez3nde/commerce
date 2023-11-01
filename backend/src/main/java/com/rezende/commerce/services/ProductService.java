@@ -1,8 +1,11 @@
 package com.rezende.commerce.services;
 
 import com.rezende.commerce.dto.ProductDTO;
+import com.rezende.commerce.dto.ProductMinDTO;
 import com.rezende.commerce.entities.Category;
 import com.rezende.commerce.entities.Product;
+import com.rezende.commerce.projections.ProductMinProjection;
+import com.rezende.commerce.repositories.CategoryRepository;
 import com.rezende.commerce.repositories.ProductRepository;
 import com.rezende.commerce.services.exceptions.DataBaseException;
 import com.rezende.commerce.services.exceptions.ResourceNotFoundException;
@@ -13,26 +16,31 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Service
 public class ProductService {
 
     private final ProductRepository repository;
+    private final CategoryRepository categoryRepository;
 
-    public ProductService (ProductRepository repository) {
+    public ProductService (ProductRepository repository, CategoryRepository categoryRepository) {
         this.repository = repository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Transactional(readOnly = true)
-    public ProductDTO findById(Long id) {
+    public ProductDTO findById(Long id){
         Product result = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Resource Not Found"));
         return new ProductDTO(result, result.getCategories());
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(Pageable pageable) {
-        Page<Product> result = repository.findAll(pageable);
+    public Page<ProductDTO> findAll(Pageable pageable, String name) {
+        Page<Product> result = repository.findByNameContainingIgnoreCase(pageable, name);
         return result.map(x -> new ProductDTO(x, x.getCategories()));
     }
 
@@ -74,13 +82,11 @@ public class ProductService {
         entity.setName(dto.getName());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
-        entity.setDescription(entity.getDescription());
+        entity.setDescription(dto.getDescription());
 
         entity.getCategories().clear();
         dto.getCategories().forEach(catDTO -> {
-            Category category = new Category();
-            category.setId(catDTO.getId());
-            category.setName(catDTO.getName());
+            Category category = categoryRepository.getReferenceById(catDTO.getId());
             entity.getCategories().add(category);
         });
     }
