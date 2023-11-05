@@ -3,6 +3,7 @@ package com.rezende.commerce.dto;
 import com.rezende.commerce.entities.Category;
 import com.rezende.commerce.entities.Product;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -28,6 +29,7 @@ public class ProductDTO {
     @Size(min = 10, message = "Description deve ter mais de 10 caracteres")
     private String description;
 
+    @NotEmpty(message = "Deve ter pelo menos uma categoria")
     private final List<CategoryDTO> categories = new ArrayList<>();
 
     public ProductDTO() {}
@@ -50,7 +52,7 @@ public class ProductDTO {
 
     public ProductDTO(Product entity, Set<Category> categories) {
         this(entity);
-        categories.stream().map(cat -> this.categories.add(new CategoryDTO(cat))).collect(Collectors.toList());
+        categories.stream().map(cat -> this.categories.add(new CategoryDTO(cat))).toList();
     }
 
     public Long getId() {

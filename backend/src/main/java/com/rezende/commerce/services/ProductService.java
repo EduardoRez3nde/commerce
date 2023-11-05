@@ -80,7 +80,6 @@ public class ProductService {
         entity.setImgUrl(dto.getImgUrl());
         entity.setDescription(dto.getDescription());
 
-        entity.getCategories().clear();
         dto.getCategories().forEach(catDTO -> {
             Category category = categoryRepository.getReferenceById(catDTO.getId());
             entity.getCategories().add(category);
