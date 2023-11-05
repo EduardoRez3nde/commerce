@@ -4,7 +4,6 @@ import com.rezende.commerce.dto.ProductDTO;
 import com.rezende.commerce.dto.ProductMinDTO;
 import com.rezende.commerce.entities.Category;
 import com.rezende.commerce.entities.Product;
-import com.rezende.commerce.projections.ProductMinProjection;
 import com.rezende.commerce.repositories.CategoryRepository;
 import com.rezende.commerce.repositories.ProductRepository;
 import com.rezende.commerce.services.exceptions.DataBaseException;
@@ -16,9 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Service
 public class ProductService {
@@ -39,9 +35,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(Pageable pageable, String name) {
+    public Page<ProductMinDTO> findAll(Pageable pageable, String name) {
         Page<Product> result = repository.findByNameContainingIgnoreCase(pageable, name);
-        return result.map(x -> new ProductDTO(x, x.getCategories()));
+        return result.map(ProductMinDTO::new);
     }
 
     @Transactional

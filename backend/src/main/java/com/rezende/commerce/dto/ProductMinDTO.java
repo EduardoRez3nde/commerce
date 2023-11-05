@@ -1,20 +1,36 @@
 package com.rezende.commerce.dto;
 
 import com.rezende.commerce.entities.Product;
-import com.rezende.commerce.projections.ProductMinProjection;
 
 public class ProductMinDTO {
 
+    private Long id;
     private String name;
+    private Double price;
+    private String imgUrl;
 
     public ProductMinDTO() {}
 
-    public ProductMinDTO(String name) {
+    public ProductMinDTO(Long id, String name, Double price, String imgUrl) {
+        this.id = id;
         this.name = name;
+        this.price = price;
+        this.imgUrl = imgUrl;
     }
 
-    public ProductMinDTO(ProductMinProjection projection) {
-        name = projection.getName();
+    public ProductMinDTO(Product entity) {
+        id = entity.getId();
+        name = entity.getName();
+        price = entity.getPrice();
+        imgUrl = entity.getImgUrl();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -23,5 +39,21 @@ public class ProductMinDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }

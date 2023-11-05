@@ -1,6 +1,7 @@
 package com.rezende.commerce.controllers;
 
 import com.rezende.commerce.dto.ProductDTO;
+import com.rezende.commerce.dto.ProductMinDTO;
 import com.rezende.commerce.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -29,9 +30,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable,
+    public ResponseEntity<Page<ProductMinDTO>> findAll(Pageable pageable,
         @RequestParam(name = "name", defaultValue = "") String name) {
-        Page<ProductDTO> result = service.findAll(pageable, name);
+        Page<ProductMinDTO> result = service.findAll(pageable, name);
         return ResponseEntity.ok(result);
     }
 
