@@ -2,8 +2,6 @@ package com.rezende.commerce.dto;
 
 import com.rezende.commerce.entities.OrderItem;
 
-import java.util.List;
-
 public class OrderItemDTO {
 
     private Long productId;

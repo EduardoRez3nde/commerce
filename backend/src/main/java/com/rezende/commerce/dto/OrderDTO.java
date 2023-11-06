@@ -2,7 +2,7 @@ package com.rezende.commerce.dto;
 
 import com.rezende.commerce.entities.Order;
 import com.rezende.commerce.entities.enums.OrderStatus;
-import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ public class OrderDTO {
 
     private PaymentDTO payment;
 
+    @NotEmpty(message = "Deve ter pelo menos uma categoria")
     private final List<OrderItemDTO> items = new ArrayList<>();
 
     public OrderDTO() {}
