@@ -3,6 +3,7 @@ package com.rezende.commerce.controllers.handlers;
 import com.rezende.commerce.dto.exceptionsDTO.CustomError;
 import com.rezende.commerce.dto.exceptionsDTO.ValidationError;
 import com.rezende.commerce.services.exceptions.DataBaseException;
+import com.rezende.commerce.services.exceptions.ForbiddenException;
 import com.rezende.commerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,13 @@ public class ControllerExceptionHandler {
         e.getBindingResult().getFieldErrors().forEach(fieldError -> {
             err.addError(fieldError.getField(), fieldError.getDefaultMessage());
         });
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomError> forbiddenException(ForbiddenException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 }
