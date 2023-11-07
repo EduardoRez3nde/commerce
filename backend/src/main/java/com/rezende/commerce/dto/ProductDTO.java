@@ -29,6 +29,7 @@ public class ProductDTO {
     @Size(min = 10, message = "Description deve ter mais de 10 caracteres")
     private String description;
 
+    @NotEmpty(message = "Campo Requerido")
     @NotEmpty(message = "Deve ter pelo menos uma categoria")
     private final List<CategoryDTO> categories = new ArrayList<>();
 
